@@ -5,7 +5,7 @@ SmartDocQA is an AI-based system where companies can upload their documents (PDF
 
 The main idea of this project is to build a centralized system where company data is stored and can be accessed easily using simple questions.
 
----
+
 
 ## ⚙️ What this project does
 - Admin uploads PDF files  
@@ -13,7 +13,7 @@ The main idea of this project is to build a centralized system where company dat
 - User asks questions  
 - System gives answers only from the uploaded document  
 
----
+
 
 ## 🧠 How it works
 1. Admin uploads a PDF  
@@ -25,7 +25,7 @@ The main idea of this project is to build a centralized system where company dat
 7. System finds the most relevant data  
 8. LLM generates the answer  
 
----
+
 
 ## 🛠 Technologies Used
 - FastAPI (Backend)  
@@ -35,7 +35,7 @@ The main idea of this project is to build a centralized system where company dat
 - Groq API (LLM)  
 - PyPDF2 (PDF Processing)  
 
----
+
 
 ## 🚀 How to Run
 pip install -r requirements.txt  
@@ -44,7 +44,7 @@ uvicorn main:app --reload
 Open in browser:  
 http://127.0.0.1:8000/docs  
 
----
+
 
 ## 🔐 API Key Setup
 Set your Groq API key using:  
@@ -53,7 +53,7 @@ setx GROQ_API_KEY "your_api_key_here"
 
 Restart terminal after setting the key.
 
----
+
 
 ## 📌 Features
 - Supports multiple companies  
@@ -62,7 +62,7 @@ Restart terminal after setting the key.
 - Clean API using FastAPI  
 - Accurate answers based only on document  
 
----
+
 
 ## 📈 Future Improvements
 - Login system using company email  
@@ -71,7 +71,7 @@ Restart terminal after setting the key.
 - Cloud deployment  
 - Better UI/UX  
 
----
+
 
 ## 👨‍💻 Author
 Brahma Teja Reddy Polu

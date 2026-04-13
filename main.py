@@ -3,6 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from routes.upload import router as upload_router
 from routes.query import router as query_router
+from routes.delete import router as delete_router
+
+
 
 app = FastAPI(
     title="SmartDocQA API",
@@ -22,6 +25,7 @@ app.add_middleware(
 #  Routes
 app.include_router(upload_router)
 app.include_router(query_router)
+app.include_router(delete_router)
 
 
 #  Root check

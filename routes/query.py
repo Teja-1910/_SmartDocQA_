@@ -4,33 +4,37 @@ from pydantic import BaseModel
 from utils.embeddings import get_embeddings
 from utils.vector_store import query_embeddings
 from utils.llm import generate_answer
-from utils.helpers import extract_company_from_email
 
 router = APIRouter()
 
 
+# ✅ UPDATED MODEL (NO EMAIL)
 class QueryRequest(BaseModel):
     question: str
-    user_email: str
+    company: str
 
 
-@router.post("/ask")
+@router.post("/query")
 def ask_question(request: QueryRequest):
     try:
-        company = extract_company_from_email(request.user_email)
-        company = company.lower().strip()   # 🔥 FIX
+        # 🔥 USE COMPANY DIRECTLY (NO EMAIL)
+        company = request.company.upper().strip()
 
         print("QUERY COMPANY:", company)
 
+        # 🔥 EMBEDDING
         query_embedding = get_embeddings([request.question])[0]
 
+        # 🔥 PINECONE SEARCH
         docs = query_embeddings(query_embedding, company)
 
         if not docs:
             return {"answer": "No data found for your company"}
 
+        # 🔥 CONTEXT
         context = " ".join(docs)[:1500]
 
+        # 🔥 LLM
         answer = generate_answer(context, request.question)
 
         return {"answer": answer}

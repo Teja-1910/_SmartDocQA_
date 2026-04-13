@@ -6,4 +6,4 @@ def extract_company_from_email(email: str):
 
 
 def extract_company_from_filename(filename: str):
-    return filename.split(".")[0].lower().strip()
+    return filename.split(".")[0].upper().strip()

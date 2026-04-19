@@ -18,7 +18,7 @@ def store_embeddings(chunks, embeddings, company):
         for chunk, embedding in zip(chunks, embeddings):
             vectors.append({
                 "id": str(uuid.uuid4()),
-                "values": embedding.tolist(),
+                "values": embedding,
                 "metadata": {
                     "text": chunk
                 }
@@ -40,7 +40,7 @@ def query_embeddings(query_embedding, company, k=5):
         company = company.lower().strip()  
 
         results = index.query(
-            vector=query_embedding.tolist(),
+            vector=query_embedding,
             top_k=k,
             include_metadata=True,
             namespace=company   

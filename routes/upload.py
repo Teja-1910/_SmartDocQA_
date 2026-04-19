@@ -27,6 +27,7 @@ async def upload_pdf(file: UploadFile = File(...)):
         chunks = chunk_text(text, 500, 100)
 
         embeddings = get_embeddings(chunks)
+        print(type(embeddings[0]))
 
         store_embeddings(chunks, embeddings, company)
 

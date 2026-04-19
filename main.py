@@ -43,4 +43,3 @@ def health():
 
 
 
-app = FastAPI()

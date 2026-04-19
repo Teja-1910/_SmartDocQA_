@@ -1,7 +1,9 @@
 fastapi
-uvicorn
+uvicorn[standard]
 python-multipart
 sentence-transformers
 chromadb
 PyPDF2
 requests
+python-dotenv
+pinecone-client

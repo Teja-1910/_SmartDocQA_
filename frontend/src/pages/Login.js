@@ -17,31 +17,31 @@ export default function Login({ onLogin }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // ✅ 1. empty check
+    // 1. empty check
     if (!email || !password) {
       setShowAlert(true);
       return;
     }
 
-    // ✅ 2. email format validation
+    //  2. email format validation
     if (!validateEmail(email)) {
       setShowAlert(true);
       return;
     }
 
-    // ✅ 3. password validation
+    // 3. password validation
     if (!validatePassword(password)) {
       alert("Password must be at least 6 characters");
       return;
     }
 
-    // ❌ 4. block gmail BEFORE extraction
+    // 4. block gmail BEFORE extraction
    if (!isCompanyEmail(email)) {
   setShowAlert(true);
   return;
 }
 
-    // ✅ 5. SAFE extraction (no crash)
+    // 5. SAFE extraction (no crash)
     const parts = email.split("@");
 
     if (!parts[1]) {
@@ -64,10 +64,10 @@ export default function Login({ onLogin }) {
       company
     };
 
-    // ✅ store user
+    // store user
     localStorage.setItem("user", JSON.stringify(user));
 
-    // ✅ login
+    // login
     onLogin(user);
   };
 

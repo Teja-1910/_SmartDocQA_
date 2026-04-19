@@ -15,7 +15,7 @@ async def upload_pdf(file: UploadFile = File(...)):
         file_bytes = await file.read()
 
         company = extract_company_from_filename(file.filename)
-        company = company.lower().strip()   # 🔥 FIX
+        company = company.lower().strip()   
 
         print("UPLOAD COMPANY:", company)
 

@@ -102,7 +102,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
+  padding: 0 2-4px;
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -176,6 +176,7 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 /* ===== CHAT AREA ===== */
@@ -229,8 +230,7 @@
   flex: 1;
   border: none;
   outline: none;
-
-  font-size: 14px;
+  font-size: 18px;
   padding: 10px;
 }
 
@@ -259,7 +259,9 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f9fafb;
+  background: #818384;
+  
+
 }
 
 /* HEADER */
@@ -284,6 +286,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
 }
 
 /* WELCOME */
@@ -301,6 +304,19 @@
   width: 100%;
   max-width: 900px;
   padding: 20px;
+  
+}
+
+.messages {
+  overflow-y: auto;
+
+  /* Hide scrollbar */
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE/Edge */
+}
+
+.messages::-webkit-scrollbar {
+  display: none;                /* Chrome, Safari */
 }
 
 /* ROW */
@@ -348,6 +364,7 @@
 .input-area {
   padding: 15px;
   border-top: 1px solid #e5e7eb;
+  background: inherit;
 }
 
 .input-box {
@@ -359,8 +376,8 @@
 
 .input-box input {
   flex: 1;
-  padding: 12px;
-  border-radius: 10px;
+  padding: 18px;
+  border-radius: 25px;
   border: 1px solid #d1d5db;
   outline: none;
 }
@@ -373,6 +390,7 @@
   border-radius: 10px;
   cursor: pointer;
 }
+
 
 /* ===== DROPDOWN ===== */
 
@@ -425,7 +443,6 @@
 }
 
 /* ===== DIVIDER ===== */
-
 .divider {
   height: 1px;
   background: #e5e7eb;
@@ -527,6 +544,7 @@ input:checked + .slider:before {
 
 /* ===== DARK MODE ===== */
 
+
 body.dark {
   background: #111827;
   color: white;
@@ -560,6 +578,147 @@ body.dark .company-box {
   background: #374151;
 }
 
+/* ===== COMPLETE DARK MODE FIX ===== */
+
+/* MAIN BACKGROUND */
+body.dark {
+  background: #111827;
+  color: white;
+}
+
+/* HEADER */
+body.dark .header {
+  background: #1f2937;
+  color: white;
+}
+
+/* CHAT CONTAINER */
+body.dark .chat-container {
+  background: #111827;
+}
+
+/* MESSAGES AREA */
+body.dark .messages {
+  background: #111827;
+}
+
+/* BOT MESSAGE */
+body.dark .bubble.bot {
+  background: #374151;
+  color: #e5e7eb;
+}
+
+/* USER MESSAGE */
+body.dark .bubble.user {
+  background: #2563eb;
+  color: white;
+}
+
+/* INPUT AREA */
+body.dark .input-area {
+  background: #1f2937;
+}
+
+/* INPUT BOX */
+body.dark .input-box input {
+  background: #374151;
+  color: white;
+  border: none;
+}
+
+/* BUTTON */
+body.dark .input-box button {
+  background: #2563eb;
+}
+
+/* PLACEHOLDER */
+body.dark input::placeholder {
+  color: #9ca3af;
+}
+
+/* WELCOME SCREEN */
+body.dark .welcome-center {
+  color: #d1d5db;
+}
+
+/* BOT ICON */
+body.dark .bot-icon {
+  color: white;
+}
+
+/* PROFILE DROPDOWN */
+body.dark .profile-dropdown {
+  background: #1f2937;
+  color: white;
+}
+
+/* COMPANY BOX */
+body.dark .company-box {
+  background: #374151;
+  color: white;
+}
+
+/* DROPDOWN ITEMS */
+body.dark .dropdown-item {
+  color: #e5e7eb;
+}
+
+/* DIVIDER */
+body.dark .divider {
+  background: #374151;
+}
+
+/* ===== ADMIN DASHBOARD DARK MODE ===== */
+
+body.dark .admin-dashboard {
+  background: #111827;
+}
+
+/* CARDS (Total Docs / Pages) */
+body.dark .card {
+  background: #1f2937;
+  color: white;
+}
+
+/* UPLOAD SECTION */
+body.dark .upload-section {
+  background: #1f2937;
+  color: white;
+}
+
+/* UPLOAD BOX */
+body.dark .upload-box {
+  border: 2px dashed #374151;
+  color: #9ca3af;
+}
+
+/* DOCUMENT LIST */
+body.dark .doc-list {
+  background: #1f2937;
+  color: white;
+}
+
+/* DOCUMENT ITEM */
+body.dark .doc-item {
+  border-bottom: 1px solid #374151;
+}
+
+/* TEXT INSIDE */
+body.dark .doc-item span,
+body.dark .doc-item p {
+  color: #d1d5db;
+}
+
+/* BUTTON */
+body.dark .upload-header button {
+  background: #2563eb;
+  color: white;
+}
+
+/* EMPTY TEXT */
+body.dark .doc-list p {
+  color: #9ca3af;
+}
 /* ================= AdminDashBoard ================= */
 
 
@@ -686,7 +845,7 @@ body.dark .company-box {
 
 .admin-dashboard {
   padding: 20px;
-  background: #f9fafb;
+  background: #f8fcff;
   min-height: 100vh;
   font-family: sans-serif;
 }
@@ -849,3 +1008,40 @@ body.dark .company-box {
     flex-direction: column;
   }
 }
+
+/* ===== TYPING DOTS ===== */
+
+.typing {
+  display: flex;
+  gap: 4px;
+  padding: 6px 0;
+}
+
+.typing span {
+  width: 6px;
+  height: 6px;
+  background: #6b7280;
+  border-radius: 50%;
+  animation: bounce 1.2s infinite;
+}
+
+.typing span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.3;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ProfileDropdown from "../components/ProfileDropdown";
 
 export default function Dashboard({ user, onLogout }) {
@@ -8,8 +8,10 @@ export default function Dashboard({ user, onLogout }) {
   const [showProfile, setShowProfile] = useState(false);
   const [showWelcome, setShowWelcome] = useState(true);
   const [showPill, setShowPill] = useState(true);
+  const bottomRef = useRef(null);
 
-  // 🔥 Welcome pill timing
+
+  // Welcome pill timing
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowPill(false);
@@ -18,7 +20,12 @@ export default function Dashboard({ user, onLogout }) {
     return () => clearTimeout(timer);
   }, []);
 
-  // 🚀 SEND MESSAGE
+  useEffect(() => {
+  bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+}, [messages]);
+  
+
+  // SEND MESSAGE
   const sendMessage = async () => {
     if (!message.trim()) return;
 
@@ -27,6 +34,11 @@ export default function Dashboard({ user, onLogout }) {
     setMessages((prev) => [...prev, userMsg]);
     setMessage("");
     setShowWelcome(false);
+
+    setMessages((prev) => [
+  ...prev,
+  { type: "bot", text: "", loading: true }
+]);
 
     try {
       const res = await fetch("http://127.0.0.1:8000/query", {
@@ -51,7 +63,7 @@ export default function Dashboard({ user, onLogout }) {
     }
   };
 
-  // 🔥 SAFE TYPING EFFECT
+  // SAFE TYPING EFFECT
   const typeEffect = (text = "") => {
 
     if (!text) {
@@ -95,7 +107,7 @@ export default function Dashboard({ user, onLogout }) {
       <div className="header">
         <div>
           <h2>SmartDocQA</h2>
-          <p className="sub">your workplace knowledge, instantly</p>
+          <p className="sub">Your Workplace Knowledge, Instantly</p>
         </div>
 
         <div
@@ -111,7 +123,7 @@ export default function Dashboard({ user, onLogout }) {
         <ProfileDropdown user={user} onLogout={onLogout} />
       )}
 
-      {/* 🔥 WELCOME PILL (FINAL PERFECT) */}
+      {/* WELCOME PILL (FINAL PERFECT) */}
       <div className={`welcome-pill ${showPill ? "show" : "hide"}`}>
         Welcome back, <span>{user?.name || "User"}</span> 👋
       </div>
@@ -123,31 +135,38 @@ export default function Dashboard({ user, onLogout }) {
           <div className="welcome-center">
             <div className="bot-icon">🤖</div>
             <h2>Welcome to SmartDocQA</h2>
-            <p>Ask any question about your documents to get started</p>
           </div>
         )}
 
         <div className="messages">
 
           {messages.map((msg, i) => (
-            <div key={i} className={`row ${msg.type}`}>
+  <div key={i} className={`row ${msg.type}`}>
 
-              {msg.type === "bot" && (
-                <div className="avatar">🤖</div>
-              )}
+    {msg.type === "bot" && (
+      <div className="avatar">🤖</div>
+    )}
 
-              <div className={`bubble ${msg.type}`}>
-                {msg.text}
-              </div>
+    <div className={`bubble ${msg.type}`}>
+      {msg.loading ? (
+        <div className="typing">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      ) : (
+        msg.text
+      )}
+    </div>
 
-              {msg.type === "user" && (
-                <div className="avatar user-avatar">
-                  {user?.name?.charAt(0) || "U"}
-                </div>
-              )}
-
-            </div>
-          ))}
+    {msg.type === "user" && (
+      <div className="avatar user-avatar">
+        {user?.name?.charAt(0) || "U"}
+      </div>
+    )}
+  <div ref={bottomRef}></div>
+  </div>
+))}
 
         </div>
 
@@ -159,7 +178,7 @@ export default function Dashboard({ user, onLogout }) {
 
           <input
             type="text"
-            placeholder="Ask a question about your documents..."
+            placeholder="Type your question here..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={(e) => {

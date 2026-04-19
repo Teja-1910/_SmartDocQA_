@@ -56,5 +56,5 @@ Answer:
             return "Error generating answer"
 
     except Exception as e:
-        print("❌ LLM ERROR:", e)
+        print(" LLM ERROR:", e)
         return "Error generating answer"

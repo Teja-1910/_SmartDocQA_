@@ -1,9 +1,9 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-
 from utils.embeddings import get_embeddings
 from utils.vector_store import query_embeddings
 from utils.llm import generate_answer
+from utils.helpers import evaluate_answer
 
 router = APIRouter()
 
@@ -36,8 +36,12 @@ def ask_question(request: QueryRequest):
 
         # 🔥 LLM
         answer = generate_answer(context, request.question)
+        evaluation = evaluate_answer(request.question, context, answer, docs)
+        return {
+        "answer": answer,
+        "evaluation": evaluation
+       }
 
-        return {"answer": answer}
 
     except Exception as e:
         print("❌ QUERY ERROR:", e)

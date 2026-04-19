@@ -10,7 +10,7 @@ export default function AdminDashboard({ user, onLogout }) {
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(null);
 
-  // 📄 Select file
+  // Select file
   const handleFileChange = (e) => {
     const selected = e.target.files[0];
 
@@ -27,7 +27,7 @@ export default function AdminDashboard({ user, onLogout }) {
     setFile(selected);
   };
 
-  // 🗑 DELETE (Frontend + Pinecone)
+  // DELETE (Frontend + Pinecone)
   const handleDelete = async () => {
     try {
       await fetch("http://127.0.0.1:8000/delete", {
@@ -56,7 +56,7 @@ export default function AdminDashboard({ user, onLogout }) {
     }
   };
 
-  // 🚀 Upload
+  // Upload
   const handleUpload = async () => {
     if (!file) {
       setAlert({
@@ -106,7 +106,7 @@ export default function AdminDashboard({ user, onLogout }) {
   return (
     <div className="admin-dashboard">
 
-      {/* 🔥 LOADING OVERLAY */}
+      {/* LOADING OVERLAY */}
       {loading && (
         <div className="upload-overlay">
           <div className="spinner"></div>
@@ -114,7 +114,7 @@ export default function AdminDashboard({ user, onLogout }) {
         </div>
       )}
 
-      {/* 🔥 ALERT */}
+      {/* ALERT */}
       {alert && (
         <AlertPill
           message={alert.message}
@@ -175,7 +175,7 @@ export default function AdminDashboard({ user, onLogout }) {
             ) : (
               <>
                 <strong>{file.name}</strong>
-                <p>{(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+               
               </>
             )}
 
@@ -203,7 +203,7 @@ export default function AdminDashboard({ user, onLogout }) {
               <div>
                 <p>{doc.name}</p>
                 <span>
-                  {doc.size} MB • {doc.pages} pages • {doc.date}
+                 {doc.pages} pages • {doc.date}
                 </span>
               </div>
 

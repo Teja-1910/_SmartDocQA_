@@ -1,9 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
 from routes.upload import router as upload_router
 from routes.query import router as query_router
-from routes.delete import router as delete_router
+
 
 
 
@@ -25,7 +24,7 @@ app.add_middleware(
 #  Routes
 app.include_router(upload_router)
 app.include_router(query_router)
-app.include_router(delete_router)
+
 
 
 #  Root check
@@ -41,3 +40,7 @@ def home():
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+
+
+app = FastAPI()

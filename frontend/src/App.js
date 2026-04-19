@@ -6,7 +6,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 function App() {
   const [user, setUser] = useState(null);
 
-  // ✅ Load user + theme on start
+  // Load user + theme on start
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
 
@@ -14,7 +14,7 @@ function App() {
       setUser(JSON.parse(storedUser));
     }
 
-    // 🌙 apply saved theme
+    // apply saved theme
     const savedTheme = localStorage.getItem("theme");
 
     if (savedTheme === "dark") {
@@ -22,18 +22,18 @@ function App() {
     }
   }, []);
 
-  // ✅ Logout
+  //  Logout
   const handleLogout = () => {
     localStorage.removeItem("user");
     setUser(null);
   };
 
-  // ❌ Not logged in → Login page
+  // Not logged in → Login page
   if (!user) {
     return <Login onLogin={setUser} />;
   }
 
-  // 🔥 Admin view
+  // Admin view
   if (user.role === "Admin") {
     return (
       <AdminDashboard
@@ -43,7 +43,7 @@ function App() {
     );
   }
 
-  // 🔥 User view
+  // User view
   return (
     <Dashboard
       user={user}

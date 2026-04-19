@@ -11,7 +11,7 @@ index = pc.Index("smartdocqa")
 
 def store_embeddings(chunks, embeddings, company):
     try:
-        company = company.lower().strip()   # 🔥 safety
+        company = company.lower().strip()   
 
         vectors = []
 
@@ -26,24 +26,24 @@ def store_embeddings(chunks, embeddings, company):
 
         index.upsert(
             vectors=vectors,
-            namespace=company   # 🔥 namespace
+            namespace=company 
         )
 
-        print(f"✅ Stored {len(vectors)} chunks in {company}")
+        print(f"Stored {len(vectors)} chunks in {company}")
 
     except Exception as e:
-        print("❌ STORE ERROR:", e)
+        print("STORE ERROR:", e)
 
 
 def query_embeddings(query_embedding, company, k=5):
     try:
-        company = company.lower().strip()   # 🔥 safety
+        company = company.lower().strip()  
 
         results = index.query(
             vector=query_embedding.tolist(),
             top_k=k,
             include_metadata=True,
-            namespace=company   # 🔥 strict isolation
+            namespace=company   
         )
 
         matches = results.get("matches", [])
@@ -54,10 +54,10 @@ def query_embeddings(query_embedding, company, k=5):
             if "metadata" in match and "text" in match["metadata"]
         ]
 
-        print(f"🔍 Retrieved {len(docs)} docs from {company}")
+        print(f" Retrieved {len(docs)} docs from {company}")
 
         return docs
 
     except Exception as e:
-        print("❌ QUERY ERROR:", e)
+        print(" QUERY ERROR:", e)
         return []

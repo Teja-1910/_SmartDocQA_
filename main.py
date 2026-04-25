@@ -15,13 +15,13 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # later restrict for production
+    allow_origins=["*"],  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-#  Routes
+
 app.include_router(upload_router)
 app.include_router(query_router)
 
@@ -36,7 +36,6 @@ def home():
     }
 
 
-# Health check (useful later)
 @app.get("/health")
 def health():
     return {"status": "ok"}

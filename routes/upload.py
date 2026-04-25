@@ -19,12 +19,12 @@ async def upload_pdf(file: UploadFile = File(...)):
 
         print("UPLOAD COMPANY:", company)
 
-        text = load_pdf(file_bytes)
+        documents = load_pdf(file_bytes)
 
-        if not text.strip():
+        if not documents:
             return {"error": "No text extracted"}
 
-        chunks = chunk_text(text, 500, 100)
+        chunks = chunk_text(documents, 500, 100)
 
         embeddings = get_embeddings(chunks)
         print(type(embeddings[0]))
@@ -34,7 +34,7 @@ async def upload_pdf(file: UploadFile = File(...)):
         return {
             "message": "Upload successful",
             "company": company,
-            "chunks": len(chunks)
+            "pages": len(documents)
         }
 
     except Exception as e:

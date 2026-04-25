@@ -73,16 +73,19 @@ export default function AdminDashboard({ user, onLogout }) {
     setLoading(true);
 
     try {
-      await fetch("http://127.0.0.1:8000/upload", {
+     const res = await fetch("http://127.0.0.1:8000/upload", {
         method: "POST",
         body: formData
       });
 
+      const data = await res.json()
+      
+
       const newDoc = {
-        name: file.name,
-        pages: Math.floor(Math.random() * 30) + 1,
-        size: (file.size / (1024 * 1024)).toFixed(2),
-        date: new Date().toISOString().split("T")[0]
+      name: file.name,
+      pages: data.pages,   
+      size: (file.size / (1024 * 1024)).toFixed(2),
+      date: new Date().toISOString().split("T")[0]
       };
 
       setDocuments([newDoc]);
@@ -152,7 +155,7 @@ export default function AdminDashboard({ user, onLogout }) {
         <div className="card">
           <p>Total Pages</p>
           <h3>
-            {documents.reduce((sum, d) => sum + d.pages, 0)}
+            {documents.reduce((sum, d) => sum + (d.pages || 0), 0)}
           </h3>
         </div>
       </div>
@@ -203,7 +206,7 @@ export default function AdminDashboard({ user, onLogout }) {
               <div>
                 <p>{doc.name}</p>
                 <span>
-                 {doc.pages} pages • {doc.date}
+                 {doc.pages || 0} pages • {doc.date}
                 </span>
               </div>
 

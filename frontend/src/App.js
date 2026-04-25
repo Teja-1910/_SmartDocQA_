@@ -5,6 +5,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   const [user, setUser] = useState(null);
+  
 
   // Load user + theme on start
   useEffect(() => {

@@ -20,8 +20,9 @@ def store_embeddings(chunks, embeddings, company):
                 "id": str(uuid.uuid4()),
                 "values": embedding,
                 "metadata": {
-                    "text": chunk
-                }
+                      "text": chunk["text"],     
+                       "page": int(chunk["page"]) 
+}
             })
 
         index.upsert(

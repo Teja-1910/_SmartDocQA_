@@ -3,11 +3,14 @@ import io
 
 def load_pdf(file_bytes):
     reader = PyPDF2.PdfReader(io.BytesIO(file_bytes))
-    text = ""
+    
+    documents = []
 
-    for page in reader.pages:
-        extracted = page.extract_text()
-        if extracted:
-            text += extracted
+    for i, page in enumerate(reader.pages):
+        text = page.extract_text()
+        documents.append({
+        "text": text,
+        "page": i + 1
+    })
 
-    return text
+    return documents

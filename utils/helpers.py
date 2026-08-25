@@ -1,3 +1,7 @@
+import numpy as np
+from utils.embeddings import get_embeddings
+
+
 def extract_company_from_email(email: str):
     try:
         return email.split("@")[1].split(".")[0].lower().strip()
@@ -8,50 +12,112 @@ def extract_company_from_email(email: str):
 def extract_company_from_filename(filename: str):
     try:
         name = filename.lower().strip()
-
-        
         name = name.split(".")[0]
-
-        
         name = name.replace("-", "_")
-
-       
         company = name.split("_")[0]
-
         return company
-
     except:
         return "unknown"
 
+
+def cosine_similarity(a, b):
+    a = np.array(a, dtype=float)
+    b = np.array(b, dtype=float)
+
+    denominator = np.linalg.norm(a) * np.linalg.norm(b)
+
+    if denominator == 0:
+        return 0.0
+
+    return float(np.dot(a, b) / denominator)
+
+
 def evaluate_answer(question, context, answer, docs):
-    # Normalize text
-    q = question.lower()
-    a = answer.lower()
-    c = context.lower()
 
-    # Keyword overlap
-    q_words = set(q.split())
-    a_words = set(a.split())
-    overlap = len(q_words & a_words)
+    question_embedding = get_embeddings([question])[0]
+    answer_embedding = get_embeddings([answer])[0]
 
-    # Context coverage (better check)
-    context_hits = sum(1 for word in a_words if word in c)
-    context_score = context_hits / (len(a_words) + 1)
+    relevance = cosine_similarity(
+        question_embedding,
+        answer_embedding
+    )
 
-    # Length
-    length = len(answer)
+    retrieval_scores = []
 
-    # 🔥 Improved logic
-    if context_score > 0.4 and length > 30:
-        status = "GOOD"
-    elif context_score > 0.2:
-        status = "AVERAGE"
-    else:
-        status = "POOR"
+    for doc in docs:
+        doc_embedding = get_embeddings([doc])[0]
+
+        score = cosine_similarity(
+            question_embedding,
+            doc_embedding
+        )
+
+        retrieval_scores.append(score)
+
+    retrieval_relevance = (
+        max(retrieval_scores)
+        if retrieval_scores
+        else 0.0
+    )
+
+    faithfulness_scores = []
+
+    for doc in docs:
+        doc_embedding = get_embeddings([doc])[0]
+
+        score = cosine_similarity(
+            answer_embedding,
+            doc_embedding
+        )
+
+        faithfulness_scores.append(score)
+
+    faithfulness = (
+        max(faithfulness_scores)
+        if faithfulness_scores
+        else 0.0
+    )
+
+    overall_score = (
+        retrieval_relevance
+        + relevance
+        + faithfulness
+    ) / 3
+
+    print("\n" + "=" * 60)
+    print("SMARTDOCQA LIVE EVALUATION")
+    print("=" * 60)
+
+    print("\nQuestion:")
+    print(question)
+
+    print("\nGenerated Answer:")
+    print(answer)
+
+    print(f"\nRetrieved Chunks: {len(docs)}")
+
+    print(
+        f"Retrieval Relevance: {retrieval_relevance * 100:.2f}%"
+    )
+
+    print(
+        f"Answer Relevance:    {relevance * 100:.2f}%"
+    )
+
+    print(
+        f"Faithfulness:        {faithfulness * 100:.2f}%"
+    )
+
+    print(
+        f"Overall Score:       {overall_score * 100:.2f}%"
+    )
+
+    print("=" * 60)
 
     return {
-        "keyword_overlap": overlap,
-        "context_score": round(context_score, 2),
-        "answer_length": length,
-        "status": status
+        "retrieval_relevance": round(retrieval_relevance, 4),
+        "answer_relevance": round(relevance, 4),
+        "faithfulness": round(faithfulness, 4),
+        "overall_score": round(overall_score, 4),
+        "retrieved_chunks": len(docs)
     }

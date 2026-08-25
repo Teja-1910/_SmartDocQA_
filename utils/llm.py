@@ -10,13 +10,27 @@ API_KEY = os.getenv("GROQ_API_KEY")
 def generate_answer(context, question):
     try:
         prompt = f"""
-You are a strict document assistant.
+You are SmartDocQA, a strict company document assistant.
 
-Rules:
-- Answer ONLY from the context
-- If answer not found, say: "Answer not found in document"
-- Do NOT guess
-- Keep answer short
+Your job is to answer the user's question using ONLY the provided context.
+
+IMPORTANT RULES:
+- Give the shortest possible answer that completely answers the question.
+- Prefer ONE short sentence whenever possible.
+- Do not explain extra details unless they are specifically asked for.
+- Do not repeat the question.
+- Do not provide unnecessary background information.
+- Do not add examples unless the question asks for examples.
+- Do not guess or use outside knowledge.
+- If the answer is not clearly available in the context, say exactly:
+  "Answer not found in the document."
+- If the context contains a direct answer, return only that answer.
+- Keep responses precise, direct, and easy to understand.
+
+Example:
+Question: "What dress code do I need to maintain?"
+Good answer: "Employees must follow the prescribed formal dress code."
+Bad answer: A long explanation of the company's entire dress-code policy.
 
 Context:
 {context}
@@ -34,10 +48,14 @@ Answer:
                 "Content-Type": "application/json"
             },
             json={
-                "model": "llama-3.1-8b-instant",
+                "model": "openai/gpt-oss-20b",
                 "messages": [
-                    {"role": "user", "content": prompt}
-                ]
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ],
+                "max_tokens": 512
             },
             timeout=30
         )
@@ -52,9 +70,9 @@ Answer:
 
         if "choices" in data:
             return data["choices"][0]["message"]["content"].strip()
-        else:
-            return "Error generating answer"
+
+        return "Error generating answer"
 
     except Exception as e:
-        print(" LLM ERROR:", e)
+        print("LLM ERROR:", e)
         return "Error generating answer"

@@ -8,7 +8,6 @@ from utils.helpers import evaluate_answer
 router = APIRouter()
 
 
-
 class QueryRequest(BaseModel):
     question: str
     company: str
@@ -17,33 +16,53 @@ class QueryRequest(BaseModel):
 @router.post("/query")
 def ask_question(request: QueryRequest):
     try:
-        
-        company = request.company.upper().strip()
 
-        print("QUERY COMPANY:", company)
+        company = request.company.lower().strip()
 
-        
+        print("\n" + "=" * 60)
+        print("SMARTDOCQA LIVE QUERY")
+        print("=" * 60)
+        print("COMPANY:", company)
+        print("QUESTION:", request.question)
+
         query_embedding = get_embeddings([request.question])[0]
 
-       
-        docs = query_embeddings(query_embedding, company)
+        docs = query_embeddings(
+            query_embedding,
+            company,
+            k=5
+        )
 
         if not docs:
-            return {"answer": "No data found for your company"}
+            print("NO DOCUMENTS FOUND")
+            return {
+                "answer": "No data found for your company"
+            }
 
-        
         context = " ".join(docs)[:1500]
 
-        
-        answer = generate_answer(context, request.question)
-        evaluation = evaluate_answer(request.question, context, answer, docs)
-        return {
-        "answer": answer,
-        "evaluation": evaluation
-       }
-        
+        answer = generate_answer(
+            context,
+            request.question
+        )
 
+        evaluation = evaluate_answer(
+            request.question,
+            context,
+            answer,
+            docs
+        )
+
+        print("=" * 60)
+
+        return {
+            "answer": answer,
+            "evaluation": evaluation
+        }
 
     except Exception as e:
         print("❌ QUERY ERROR:", e)
-        return {"answer": "Error generating answer"}
+
+        return {
+            "answer": "Error generating answer"
+        }

@@ -20,7 +20,7 @@ def chunk_text(documents, chunk_size=500, overlap=100):
             if chunk.strip():
                 chunks.append({
                     "text": chunk,
-                    "page": page   # 🔥 keep page info
+                    "page": page   
                 })
 
             start = end - overlap

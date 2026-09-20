@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 📄 SMARTDOCQA – INTELLIGENT RAG-BASED DOCUMENT QUESTION ANSWERING SYSTEM
 
 🤖 SmartDocQA is an end-to-end RAG-based document question-answering system designed to make internal company information easier and faster for HR admins and employees to access.
@@ -112,13 +113,484 @@ Each text chunk is converted into a numerical vector representation using an emb
 🧠 Embedding Model
 ↓
 🔢 Vector Representation
+=======
+# SmartDocQA
+
+SmartDocQA is an end-to-end RAG-based document question-answering system designed to make internal company information easier and faster for HR admins and employees to access.
+
+Instead of manually searching through large company PDF documents, employees can ask questions in natural language and receive concise, context-aware answers based on their company's documents.
+
+## Features
+
+- PDF document upload and text extraction
+- Text chunking with overlap
+- Embedding-based semantic retrieval
+- Pinecone vector database
+- LLM-powered contextual answers
+- Centralized multi-company architecture
+- Company-level data isolation using Pinecone namespaces
+- Organization email-based company identification
+- Automatic user name and company extraction
+- Natural-language document querying
+- Live RAG evaluation
+- Offline RAG evaluation
+- FastAPI backend
+- React frontend
+
+## System Architecture
+
+SmartDocQA
+
+Admin User / Employee
+        |
+        v
+React Frontend
+        |
+        v
+FastAPI Backend
+        |
+        +-----------------------+
+        |                       |
+        v                       v
+Document Upload           User Query
+        |                       |
+        v                       v
+PDF Text Extraction       Query Embedding
+        |                       |
+        v                       v
+Text Chunking             Pinecone Search
+        |                       |
+        v                       v
+Embedding Generation      Top-K Relevant Chunks
+        |                       |
+        v                       v
+Pinecone Storage          Retrieved Context
+        |                       |
+        +-----------+-----------+
+                    |
+                    v
+                   LLM
+                    |
+                    v
+              Final Answer
+
+## RAG Pipeline
+
+### 1. Document Upload
+
+An admin uploads a company PDF.
+
+Example:
+
+amazon_policies.pdf
+
+The system extracts the company name from the filename:
+
+amazon
+
+### 2. Text Extraction
+
+The uploaded PDF is processed and text is extracted page by page.
+
+PDF
+ |
+ +-- Page 1 -> Text
+ +-- Page 2 -> Text
+ +-- Page 3 -> Text
+ +-- ...
+
+### 3. Text Chunking
+
+The extracted text is divided into smaller overlapping chunks.
+
+Document
+   |
+   +-- Chunk 1
+   +-- Chunk 2
+   +-- Chunk 3
+   +-- ...
+
+Each chunk contains metadata such as:
+
+- text
+- page
+
+### 4. Embedding Generation
+
+Each text chunk is converted into a numerical vector representation using an embedding model.
+
+Text Chunk
+    |
+    v
+Embedding Model
+    |
+    v
+Vector
+
+### 5. Pinecone Storage
+
+The generated vectors are stored in Pinecone.
+
+Each company uses a separate namespace.
+
+Pinecone
+ |
+ +-- amazon
+ |
+ +-- infosys
+ |
+ +-- tcs
+ |
+ +-- hyniva
+
+This provides logical company-level data isolation.
+
+### 6. User Query
+
+An employee asks a question in natural language.
+
+Example:
+
+What dress code should I maintain?
+
+The question is converted into an embedding.
+
+Question
+   |
+   v
+Embedding
+   |
+   v
+Pinecone Search
+
+### 7. Semantic Retrieval
+
+Pinecone searches the company's namespace and retrieves the top-K most semantically relevant chunks.
+
+Question
+   |
+   v
+Pinecone
+   |
+   v
+Top 5 Relevant Chunks
+
+The retrieved chunks are provided to the LLM as context.
+
+### 8. LLM Generation
+
+The LLM receives the retrieved context and user question and generates a concise answer based on the retrieved information.
+
+## Multi-Company Architecture
+
+SmartDocQA follows a centralized multi-company architecture.
+
+Company identity can be extracted from the user's organization email.
+
+Example:
+
+teja@amazon.com
+
+The system extracts:
+
+Name: teja
+Company: amazon
+
+The company name is then used to identify the appropriate Pinecone namespace.
+
+teja@amazon.com
+        |
+        v
+     amazon
+        |
+        v
+Pinecone namespace: amazon
+
+Similarly:
+
+teja@tcs.com
+        |
+        v
+      tcs
+        |
+        v
+Pinecone namespace: tcs
+
+This allows multiple companies to use the same centralized application while keeping their document data logically isolated.
+
+## User Identity
+
+The system extracts user information directly from the organization email.
+
+Example:
+
+brahmateja@amazon.com
+
+Extracted information:
+
+Name: brahmateja
+Company: amazon
+Email: brahmateja@amazon.com
+
+The extracted information can be displayed in the user's profile.
+
+## Admin Workflow
+
+Admin Login
+     |
+     v
+Organization Email
+     |
+     v
+Company Identification
+     |
+     v
+Admin Dashboard
+     |
+     v
+Upload Company PDF
+     |
+     v
+Extract Company Name
+     |
+     v
+Extract PDF Text
+     |
+     v
+Chunk Text
+     |
+     v
+Generate Embeddings
+     |
+     v
+Store in Company Pinecone Namespace
+
+## Employee Workflow
+
+Employee Login
+      |
+      v
+Organization Email
+      |
+      v
+Extract Name + Company
+      |
+      v
+Employee Dashboard
+      |
+      v
+Ask Question
+      |
+      v
+Generate Query Embedding
+      |
+      v
+Search Company Namespace
+      |
+      v
+Retrieve Top-K Chunks
+      |
+      v
+Send Context to LLM
+      |
+      v
+Generate Concise Answer
+
+## RAG Evaluation
+
+SmartDocQA includes evaluation of the RAG pipeline to measure retrieval and answer-generation quality.
+
+The evaluation is divided into:
+
+1. Live Evaluation
+2. Offline Evaluation
+
+## Live Evaluation
+
+Every real question asked through the SmartDocQA application can be evaluated after the RAG pipeline generates an answer.
+
+User Question
+      |
+      v
+Query Embedding
+      |
+      v
+Pinecone Retrieval
+      |
+      v
+Retrieved Chunks
+      |
+      v
+LLM
+      |
+      v
+Generated Answer
+      |
+      v
+Live Evaluation
+      |
+      v
+Console Metrics
+
+The current live evaluation tracks:
+
+- Retrieval Relevance
+- Answer Relevance
+- Faithfulness
+- Overall Evaluation Score
+- Number of Retrieved Chunks
+
+Example console output:
+
+============================================================
+SMARTDOCQA LIVE EVALUATION
+============================================================
+
+Question:
+What is the dress code?
+
+Generated Answer:
+Business casual attire is recommended unless otherwise specified.
+
+Retrieved Chunks: 5
+
+Retrieval Relevance: 39.29%
+Answer Relevance:    57.03%
+Faithfulness:        68.52%
+Overall Score:       54.95%
+
+============================================================
+
+The live metrics are used as evaluation signals for monitoring and debugging the RAG pipeline.
+
+## Offline Evaluation
+
+SmartDocQA also supports controlled evaluation using a fixed evaluation dataset.
+
+The evaluation dataset contains:
+
+- Question
+- Reference Answer
+- Relevant Page
+
+Example:
+
+{
+  "question": "What dress code should employees follow?",
+  "reference_answer": "Business casual attire is recommended unless otherwise specified.",
+  "relevant_pages": [4]
+}
+
+The offline evaluation can be used to measure:
+
+### Retrieval Metrics
+
+- Hit@5
+- Mean Reciprocal Rank (MRR)
+- Context Relevance
+
+### Generation Metrics
+
+- Faithfulness
+- Answer Relevance
+- Answer Correctness
+
+This makes it possible to systematically compare different RAG configurations.
+
+## Evaluation Architecture
+
+Evaluation Dataset
+        |
+        v
+    Question
+        |
+        v
+    Embedding
+        |
+        v
+    Pinecone
+        |
+        v
+   Top-K Chunks
+        |
+        +----------------+
+        |                |
+        v                v
+Retrieval Metrics       LLM
+        |                |
+        |                v
+        |         Generated Answer
+        |                |
+        |       +--------+--------+
+        |       |        |        |
+        v       v        v        v
+      Hit@5  Faithfulness
+      MRR    Relevance
+             Correctness
+
+## Evaluation Metrics
+
+### Hit@5
+
+Measures whether at least one relevant chunk appears within the top 5 retrieved chunks.
+
+Relevant chunk in Top 5 -> Hit
+Relevant chunk not in Top 5 -> Miss
+
+### Mean Reciprocal Rank (MRR)
+
+Measures how highly the first relevant chunk is ranked.
+
+A higher MRR means relevant information is generally appearing closer to the top of the retrieval results.
+
+### Retrieval Relevance
+
+Measures how semantically relevant the retrieved chunks are to the user's question.
+
+### Answer Relevance
+
+Measures whether the generated answer is relevant to the user's question.
+
+### Faithfulness
+
+Measures whether the generated answer is supported by the retrieved context.
+
+### Answer Correctness
+
+Measures whether the generated answer agrees with the reference answer in the controlled evaluation dataset.
+
+## Technology Stack
+>>>>>>> 69a6289 (Updated with project screenshots)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+<<<<<<< HEAD
 5️⃣ 🔎 PINECONE STORAGE
+=======
+- Python
+- FastAPI
+- Uvicorn
+
+### AI / ML
+
+- Retrieval-Augmented Generation (RAG)
+- Text Embeddings
+- Semantic Search
+- Large Language Models
+
+### Vector Database
+
+- Pinecone
+
+### LLM
+
+- Groq API
+- Llama 3.1
+>>>>>>> 69a6289 (Updated with project screenshots)
 
 The generated embeddings are stored in Pinecone.
 
+<<<<<<< HEAD
 SmartDocQA uses company-specific namespaces for logical data isolation.
 
 🔎 Pinecone
@@ -606,3 +1078,168 @@ Brahma Teja Reddy Polu
 ⭐ SMARTDOCQA
 
 🤖 An intelligent RAG-based document question-answering system for centralized, multi-company knowledge access.
+=======
+- React
+- JavaScript
+- HTML
+- CSS
+
+### Evaluation
+
+- Embedding-based similarity
+- Retrieval evaluation
+- RAG evaluation
+- NumPy
+- Matplotlib
+- CSV-based evaluation results
+
+## Project Structure
+
+SmartDocQA/
+|
++-- backend/
+|   |
+|   +-- main.py
+|   |
+|   +-- routers/
+|   |   +-- upload.py
+|   |   +-- query.py
+|   |
+|   +-- utils/
+|   |   +-- pdf_loader.py
+|   |   +-- chunking.py
+|   |   +-- embeddings.py
+|   |   +-- vector_store.py
+|   |   +-- llm.py
+|   |   +-- helpers.py
+|   |
+|   +-- evaluation/
+|   |   +-- evaluation.py
+|   |   +-- dataset.json
+|   |
+|   +-- requirements.txt
+|   +-- .env
+|
++-- frontend/
+    |
+    +-- src/
+    +-- public/
+    +-- package.json
+
+## Environment Variables
+
+Create a .env file in the backend:
+
+PINECONE_API_KEY=your_pinecone_api_key
+GROQ_API_KEY=your_groq_api_key
+
+Never commit API keys or .env files to GitHub.
+
+## Running the Backend
+
+Install dependencies:
+
+pip install -r requirements.txt
+
+Start the FastAPI server:
+
+uvicorn main:app --reload
+
+Open Swagger UI:
+
+http://127.0.0.1:8000/docs
+
+## Running the Frontend
+
+Install dependencies:
+
+npm install
+
+Start the development server:
+
+npm start
+
+## API Endpoints
+
+### Upload Document
+
+POST /upload
+
+Uploads a company PDF, extracts its text, generates embeddings, and stores the vectors in the company's Pinecone namespace.
+
+### Ask Question
+
+POST /query
+
+Accepts a user question and company identity, retrieves relevant company information, generates an answer using the LLM, and performs live evaluation.
+
+## Data Isolation
+
+Company data is isolated using Pinecone namespaces.
+
+Company A
+    |
+    v
+Namespace A
+
+Company B
+    |
+    v
+Namespace B
+
+Company C
+    |
+    v
+Namespace C
+
+During retrieval, the user's company identity determines which namespace is searched.
+
+## Deployment Architecture
+
+User
+ |
+ v
+Vercel Frontend
+ |
+ | HTTPS
+ v
+FastAPI Backend
+ |
+ +----------------+
+ |                |
+ v                v
+Pinecone         Groq
+Vector DB         LLM
+
+The frontend and backend are deployed separately, while Pinecone and Groq are accessed securely through the backend.
+
+## Project Goal
+
+The goal of SmartDocQA is to transform static company documents into an intelligent, searchable knowledge system where employees can obtain concise answers through natural-language queries instead of manually searching through large PDF documents.
+
+## Future Enhancements
+
+- Complete authentication and authorization
+- Role-based access control
+- Admin and employee permission management
+- Improved retrieval strategies
+- Reranking of retrieved chunks
+- Advanced RAG evaluation
+- Evaluation dashboard
+- Conversation history
+- Document management
+- Multi-document support
+- Production monitoring and logging
+
+## Author
+
+Brahma Teja Reddy Polu
+
+B.Tech - Computer Science and Engineering (Artificial Intelligence & Machine Learning)
+
+Chaitanya Bharathi Institute of Technology
+
+## SmartDocQA
+
+An intelligent RAG-based document question-answering system for centralized, multi-company knowledge access.
+>>>>>>> 69a6289 (Updated with project screenshots)

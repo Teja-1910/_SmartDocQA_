@@ -6,4 +6,4 @@ chromadb
 PyPDF2
 requests
 python-dotenv
-pinecone-client
+pinecone

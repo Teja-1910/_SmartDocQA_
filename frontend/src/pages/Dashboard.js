@@ -41,7 +41,7 @@ export default function Dashboard({ user, onLogout }) {
 ]);
 
     try {
-  const res = await fetch("https://smartdocqa.up.railway.app/query", {
+      const res = await fetch("https://smartdocqa.up.railway.app/query", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

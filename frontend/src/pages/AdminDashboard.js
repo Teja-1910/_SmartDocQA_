@@ -30,7 +30,7 @@ export default function AdminDashboard({ user, onLogout }) {
   // DELETE (Frontend + Pinecone)
   const handleDelete = async () => {
     try {
-      await fetch("http://smartdocqa.up.railway.app/delete", {
+      await fetch("https://smartdocqa.up.railway.app/delete", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -73,7 +73,7 @@ export default function AdminDashboard({ user, onLogout }) {
     setLoading(true);
 
     try {
-     const res = await fetch("http://smartdocqa.up.railway.app/upload", {
+     const res = await fetch("https://smartdocqa.up.railway.app/upload", {
         method: "POST",
         body: formData
       });
